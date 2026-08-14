@@ -1,1 +1,377 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>MatchMind Football Analytics</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #07111f;
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 28px 18px;
+      text-align: center;
+      background: linear-gradient(135deg, #07111f, #12365b);
+      border-bottom: 1px solid #244766;
+    }
+
+    .logo {
+      font-size: 34px;
+      font-weight: 800;
+      color: #45e0a8;
+    }
+
+    .subtitle {
+      color: #aab9c8;
+      margin-top: 7px;
+      font-size: 14px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 30px 18px 18px;
+    }
+
+    .hero h1 {
+      font-size: 27px;
+      line-height: 1.25;
+    }
+
+    .hero h1 span {
+      color: #45e0a8;
+    }
+
+    .hero p {
+      color: #aab9c8;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: auto;
+      padding: 15px;
+    }
+
+    .card {
+      background: #0d1d2e;
+      border: 1px solid #203b55;
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,.25);
+    }
+
+    .card h2 {
+      font-size: 19px;
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      color: #aab9c8;
+      font-size: 13px;
+      margin: 12px 0 6px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #31506d;
+      background: #071421;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #45e0a8;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 11px;
+      padding: 15px;
+      margin-top: 18px;
+      font-size: 16px;
+      font-weight: bold;
+      background: #45e0a8;
+      color: #04140f;
+      cursor: pointer;
+    }
+
+    button:active {
+      transform: scale(.98);
+    }
+
+    #result {
+      display: none;
+    }
+
+    .match {
+      text-align: center;
+      font-size: 21px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .prediction {
+      background: #13283d;
+      border-radius: 12px;
+      padding: 14px;
+      margin: 10px 0;
+    }
+
+    .prediction-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .bar {
+      height: 9px;
+      background: #071421;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      background: #45e0a8;
+      border-radius: 20px;
+    }
+
+    .strong {
+      margin-top: 18px;
+      text-align: center;
+      padding: 17px;
+      border: 1px solid #45e0a8;
+      border-radius: 12px;
+      color: #45e0a8;
+      font-weight: bold;
+    }
+
+    .warning {
+      margin-top: 14px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #75889a;
+      text-align: center;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .feature {
+      background: #13283d;
+      padding: 15px 10px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: #cbd7e2;
+    }
+
+    footer {
+      text-align: center;
+      color: #62788b;
+      padding: 25px 10px 35px;
+      font-size: 12px;
+    }
+
+    @media(max-width:500px) {
+      .logo {
+        font-size: 29px;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">⚽ MatchMind</div>
+  <div class="subtitle">FOOTBALL ANALYTICS</div>
+</header>
+
+<section class="hero">
+  <h1>Tahmini değil,<br><span>güçlü olasılığı</span> bul.</h1>
+  <p>
+    Futbol maçlarını analiz et ve olasılıkları tek ekranda gör.
+  </p>
+</section>
+
+<div class="container">
+
+  <div class="card">
+    <h2>⚽ Maç Analizi</h2>
+
+    <label>Ev Sahibi Takım</label>
+    <input id="home" type="text" placeholder="Örn: Galatasaray">
+
+    <label>Deplasman Takımı</label>
+    <input id="away" type="text" placeholder="Örn: Fenerbahçe">
+
+    <button onclick="analyse()">MAÇI ANALİZ ET</button>
+  </div>
+
+  <div class="card" id="result">
+
+    <div class="match" id="matchName"></div>
+
+    <div class="prediction">
+      <div class="prediction-top">
+        <span>1 — Ev Sahibi</span>
+        <strong id="homePercent"></strong>
+      </div>
+      <div class="bar">
+        <div class="fill" id="homeBar"></div>
+      </div>
+    </div>
+
+    <div class="prediction">
+      <div class="prediction-top">
+        <span>X — Beraberlik</span>
+        <strong id="drawPercent"></strong>
+      </div>
+      <div class="bar">
+        <div class="fill" id="drawBar"></div>
+      </div>
+    </div>
+
+    <div class="prediction">
+      <div class="prediction-top">
+        <span>2 — Deplasman</span>
+        <strong id="awayPercent"></strong>
+      </div>
+      <div class="bar">
+        <div class="fill" id="awayBar"></div>
+      </div>
+    </div>
+
+    <div class="strong" id="strongPrediction"></div>
+
+    <div class="warning">
+      Bu sürüm demo analiz motorunu kullanmaktadır.
+      Sonuçlar kesin maç sonucu veya bahis tavsiyesi değildir.
+    </div>
+
+  </div>
+
+  <div class="card">
+    <h2>MatchMind Analiz Merkezi</h2>
+
+    <div class="features">
+      <div class="feature">📊 Maç Olasılıkları</div>
+      <div class="feature">⚽ Takım Analizi</div>
+      <div class="feature">📈 Form Analizi</div>
+      <div class="feature">🧠 Akıllı Tahmin</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  MatchMind Football Analytics<br>
+  © 2026 MatchMind
+</footer>
+
+<script>
+function analyse() {
+
+  const home = document.getElementById("home").value.trim();
+  const away = document.getElementById("away").value.trim();
+
+  if (!home || !away) {
+    alert("Lütfen iki takımın adını da gir.");
+    return;
+  }
+
+  /*
+    Şimdilik demo analiz motoru.
+    Aynı takımlar girildiğinde aynı sonucu üretir.
+    Böylece tamamen rastgele değişmez.
+  */
+
+  let seed = 0;
+  const text = (home + away).toLowerCase();
+
+  for (let i = 0; i < text.length; i++) {
+    seed += text.charCodeAt(i) * (i + 1);
+  }
+
+  let homeChance = 35 + (seed % 26);
+  let drawChance = 18 + ((seed * 3) % 16);
+
+  if (homeChance + drawChance > 82) {
+    drawChance = 82 - homeChance;
+  }
+
+  let awayChance = 100 - homeChance - drawChance;
+
+  document.getElementById("matchName").innerText =
+    home + "  vs  " + away;
+
+  document.getElementById("homePercent").innerText =
+    homeChance + "%";
+
+  document.getElementById("drawPercent").innerText =
+    drawChance + "%";
+
+  document.getElementById("awayPercent").innerText =
+    awayChance + "%";
+
+  document.getElementById("homeBar").style.width =
+    homeChance + "%";
+
+  document.getElementById("drawBar").style.width =
+    drawChance + "%";
+
+  document.getElementById("awayBar").style.width =
+    awayChance + "%";
+
+  let prediction = "";
+
+  if (homeChance >= drawChance && homeChance >= awayChance) {
+    prediction = "🔥 Güçlü Olasılık: " + home + " kazanır";
+  }
+  else if (awayChance >= homeChance && awayChance >= drawChance) {
+    prediction = "🔥 Güçlü Olasılık: " + away + " kazanır";
+  }
+  else {
+    prediction = "🔥 Güçlü Olasılık: Beraberlik";
+  }
+
+  document.getElementById("strongPrediction").innerText =
+    prediction;
+
+  document.getElementById("result").style.display = "block";
+
+  document.getElementById("result").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+</script>
+
+</body>
+</html>
