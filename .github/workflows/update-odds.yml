@@ -2,9 +2,12 @@ name: Oran verilerini güncelle
 on:
   workflow_dispatch:
   schedule:
-    - cron: '15 */12 * * *'
+    - cron: '15 3 * * *'
 permissions:
   contents: write
+concurrency:
+  group: update-market-odds
+  cancel-in-progress: true
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -13,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Piyasa oranlarını al
+      - name: Yedi günlük piyasa oranlarını al
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
         run: node scripts/update-odds.mjs
@@ -22,5 +25,5 @@ jobs:
           git config user.name "matchmind-bot"
           git config user.email "actions@users.noreply.github.com"
           git add odds-feed.json
-          git diff --cached --quiet || git commit -m "Oran verilerini güncelle"
+          git diff --cached --quiet || git commit -m "Yedi günlük oran verilerini güncelle"
           git push
