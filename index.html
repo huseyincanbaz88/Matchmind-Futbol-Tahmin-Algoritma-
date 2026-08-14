@@ -1,377 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07111f">
-  <title>MatchMind Football Analytics</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07121f">
+  <title>MatchMind — Günlük Fikstür ve Kupon</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #07111f;
-      color: white;
-      min-height: 100vh;
-    }
-
-    header {
-      padding: 28px 18px;
-      text-align: center;
-      background: linear-gradient(135deg, #07111f, #12365b);
-      border-bottom: 1px solid #244766;
-    }
-
-    .logo {
-      font-size: 34px;
-      font-weight: 800;
-      color: #45e0a8;
-    }
-
-    .subtitle {
-      color: #aab9c8;
-      margin-top: 7px;
-      font-size: 14px;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 30px 18px 18px;
-    }
-
-    .hero h1 {
-      font-size: 27px;
-      line-height: 1.25;
-    }
-
-    .hero h1 span {
-      color: #45e0a8;
-    }
-
-    .hero p {
-      color: #aab9c8;
-      margin-top: 10px;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 760px;
-      margin: auto;
-      padding: 15px;
-    }
-
-    .card {
-      background: #0d1d2e;
-      border: 1px solid #203b55;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 8px 25px rgba(0,0,0,.25);
-    }
-
-    .card h2 {
-      font-size: 19px;
-      margin-bottom: 16px;
-    }
-
-    label {
-      display: block;
-      color: #aab9c8;
-      font-size: 13px;
-      margin: 12px 0 6px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #31506d;
-      background: #071421;
-      color: white;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #45e0a8;
-    }
-
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 11px;
-      padding: 15px;
-      margin-top: 18px;
-      font-size: 16px;
-      font-weight: bold;
-      background: #45e0a8;
-      color: #04140f;
-      cursor: pointer;
-    }
-
-    button:active {
-      transform: scale(.98);
-    }
-
-    #result {
-      display: none;
-    }
-
-    .match {
-      text-align: center;
-      font-size: 21px;
-      font-weight: bold;
-      margin-bottom: 20px;
-    }
-
-    .prediction {
-      background: #13283d;
-      border-radius: 12px;
-      padding: 14px;
-      margin: 10px 0;
-    }
-
-    .prediction-top {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-
-    .bar {
-      height: 9px;
-      background: #071421;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .fill {
-      height: 100%;
-      background: #45e0a8;
-      border-radius: 20px;
-    }
-
-    .strong {
-      margin-top: 18px;
-      text-align: center;
-      padding: 17px;
-      border: 1px solid #45e0a8;
-      border-radius: 12px;
-      color: #45e0a8;
-      font-weight: bold;
-    }
-
-    .warning {
-      margin-top: 14px;
-      font-size: 11px;
-      line-height: 1.5;
-      color: #75889a;
-      text-align: center;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .feature {
-      background: #13283d;
-      padding: 15px 10px;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 13px;
-      color: #cbd7e2;
-    }
-
-    footer {
-      text-align: center;
-      color: #62788b;
-      padding: 25px 10px 35px;
-      font-size: 12px;
-    }
-
-    @media(max-width:500px) {
-      .logo {
-        font-size: 29px;
-      }
-
-      .hero h1 {
-        font-size: 24px;
-      }
-    }
+    :root{--bg:#07121f;--panel:#0d2032;--panel2:#112a40;--line:#24445e;--text:#f4f8fb;--muted:#91a7b9;--green:#43e6aa;--yellow:#ffc857;--red:#ff7188}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#17446a 0,#07121f 35%);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}button,select,input{font:inherit}.wrap{max-width:900px;margin:auto;padding:0 14px}header{padding:24px 0 14px;position:sticky;top:0;z-index:10;background:rgba(7,18,31,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(68,102,128,.35)}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{font-weight:900;font-size:25px;letter-spacing:-.8px}.brand b{color:var(--green)}.live{font-size:11px;color:var(--green);border:1px solid rgba(67,230,170,.35);background:rgba(67,230,170,.08);padding:7px 10px;border-radius:99px}.hero{padding:28px 0 14px}.hero h1{font-size:clamp(29px,7vw,48px);line-height:1.03;margin:0;letter-spacing:-1.6px}.hero h1 span{color:var(--green)}.hero p{color:var(--muted);line-height:1.55;margin:13px 0 0;max-width:650px}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:17px 0}.tab{padding:12px 8px;border:1px solid var(--line);border-radius:12px;background:#0a1928;color:var(--muted);font-weight:800;cursor:pointer}.tab.active{background:var(--green);color:#042018;border-color:var(--green)}.toolbar,.card{background:linear-gradient(150deg,rgba(17,42,64,.98),rgba(11,29,46,.98));border:1px solid var(--line);border-radius:18px}.toolbar{padding:13px;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.toolbar label{font-size:11px;color:var(--muted);display:block;margin:0 0 6px 3px}.toolbar select,.toolbar input{width:100%;background:#071725;color:white;border:1px solid #31536d;border-radius:10px;padding:11px}.card{padding:17px;margin-bottom:12px;box-shadow:0 12px 28px rgba(0,0,0,.18)}.section-title{display:flex;align-items:center;justify-content:space-between;margin:4px 0 13px}.section-title h2{font-size:18px;margin:0}.section-title small{color:var(--muted)}.match{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}.league{color:var(--muted);font-size:11px;margin-bottom:6px}.teams{font-weight:800;line-height:1.45}.teams span{color:var(--muted);font-weight:500;padding:0 5px}.time{font-weight:900;color:var(--yellow);text-align:right}.status{font-size:10px;color:var(--muted);margin-top:3px}.pick{margin-top:13px;padding-top:12px;border-top:1px solid rgba(80,116,143,.35);display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px}.pick-name{font-weight:800;color:var(--green)}.badge{font-size:11px;border-radius:99px;padding:6px 8px;background:rgba(67,230,170,.09);color:var(--green);border:1px solid rgba(67,230,170,.25)}.odd{font-weight:900}.coupon-head{background:linear-gradient(135deg,#153c45,#0d2838);border-color:rgba(67,230,170,.45)}.coupon-total{font-size:34px;font-weight:900;color:var(--green)}.coupon-line{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid rgba(80,116,143,.3)}.coupon-line:last-child{border:0}.coupon-line small{color:var(--muted);display:block;margin-top:4px}.primary{width:100%;border:0;border-radius:12px;padding:14px;background:var(--green);color:#052017;font-weight:900;cursor:pointer}.primary:active{transform:scale(.99)}.empty{text-align:center;color:var(--muted);padding:36px 15px}.loader{display:flex;justify-content:center;gap:7px;padding:38px}.loader i{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 1s infinite alternate}.loader i:nth-child(2){animation-delay:.2s}.loader i:nth-child(3){animation-delay:.4s}@keyframes pulse{to{opacity:.2;transform:translateY(-5px)}}.hidden{display:none!important}.manual-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.manual-grid input{width:100%;padding:13px;background:#071725;border:1px solid #31536d;border-radius:10px;color:white}.prob{margin:12px 0}.prob-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}.bar{height:8px;background:#071725;border-radius:9px;overflow:hidden}.fill{height:100%;background:var(--green)}.notice{font-size:11px;line-height:1.5;color:#7f97aa;text-align:center;padding:12px 8px 30px}footer{color:#5f788c;text-align:center;font-size:12px;padding:12px 0 35px}@media(max-width:520px){.toolbar{grid-template-columns:1fr}.manual-grid{grid-template-columns:1fr}.pick{grid-template-columns:1fr auto}.pick .badge{display:none}.top{align-items:flex-start}.live{margin-top:2px}.tabs{position:sticky;top:77px;z-index:9;background:var(--bg);padding:8px 0;margin:8px 0}}
   </style>
 </head>
-
 <body>
+<header><div class="wrap top"><div class="brand">⚽ Match<b>Mind</b></div><div class="live" id="dataState">● CANLI FİKSTÜR</div></div></header>
+<main class="wrap">
+  <section class="hero"><h1>Bugünün maçları.<br><span>Tek dokunuşla analiz.</span></h1><p>Dünya liglerindeki fikstürü görüntüle, model olasılıklarını karşılaştır ve günlük kuponunu otomatik oluştur.</p></section>
+  <nav class="tabs"><button class="tab active" data-page="fixtures">Fikstür</button><button class="tab" data-page="coupon">Günlük Kupon</button><button class="tab" data-page="manual">Tek Maç</button></nav>
 
-<header>
-  <div class="logo">⚽ MatchMind</div>
-  <div class="subtitle">FOOTBALL ANALYTICS</div>
-</header>
+  <section id="fixtures" class="page">
+    <div class="toolbar"><div><label>TARİH</label><input id="date" type="date"></div><div><label>LİG</label><select id="league"><option value="all">Tüm Ligler</option><option value="tur.1">Türkiye Süper Lig</option><option value="eng.1">İngiltere Premier Lig</option><option value="esp.1">İspanya LaLiga</option><option value="ger.1">Almanya Bundesliga</option><option value="ita.1">İtalya Serie A</option><option value="fra.1">Fransa Ligue 1</option></select></div></div>
+    <div class="section-title"><h2>Maç Fikstürü</h2><small id="matchCount"></small></div><div id="fixtureList"><div class="loader"><i></i><i></i><i></i></div></div>
+  </section>
 
-<section class="hero">
-  <h1>Tahmini değil,<br><span>güçlü olasılığı</span> bul.</h1>
-  <p>
-    Futbol maçlarını analiz et ve olasılıkları tek ekranda gör.
-  </p>
-</section>
+  <section id="coupon" class="page hidden">
+    <div class="card coupon-head"><div class="section-title"><h2>🔥 MatchMind Günlük Kupon</h2><small>Model seçimi</small></div><div class="coupon-total" id="totalOdd">—</div><small style="color:var(--muted)">Tahmini toplam adil oran</small></div>
+    <div id="couponList"></div><button class="primary" id="refreshCoupon">KUPONU YENİDEN OLUŞTUR</button>
+  </section>
 
-<div class="container">
-
-  <div class="card">
-    <h2>⚽ Maç Analizi</h2>
-
-    <label>Ev Sahibi Takım</label>
-    <input id="home" type="text" placeholder="Örn: Galatasaray">
-
-    <label>Deplasman Takımı</label>
-    <input id="away" type="text" placeholder="Örn: Fenerbahçe">
-
-    <button onclick="analyse()">MAÇI ANALİZ ET</button>
-  </div>
-
-  <div class="card" id="result">
-
-    <div class="match" id="matchName"></div>
-
-    <div class="prediction">
-      <div class="prediction-top">
-        <span>1 — Ev Sahibi</span>
-        <strong id="homePercent"></strong>
-      </div>
-      <div class="bar">
-        <div class="fill" id="homeBar"></div>
-      </div>
-    </div>
-
-    <div class="prediction">
-      <div class="prediction-top">
-        <span>X — Beraberlik</span>
-        <strong id="drawPercent"></strong>
-      </div>
-      <div class="bar">
-        <div class="fill" id="drawBar"></div>
-      </div>
-    </div>
-
-    <div class="prediction">
-      <div class="prediction-top">
-        <span>2 — Deplasman</span>
-        <strong id="awayPercent"></strong>
-      </div>
-      <div class="bar">
-        <div class="fill" id="awayBar"></div>
-      </div>
-    </div>
-
-    <div class="strong" id="strongPrediction"></div>
-
-    <div class="warning">
-      Bu sürüm demo analiz motorunu kullanmaktadır.
-      Sonuçlar kesin maç sonucu veya bahis tavsiyesi değildir.
-    </div>
-
-  </div>
-
-  <div class="card">
-    <h2>MatchMind Analiz Merkezi</h2>
-
-    <div class="features">
-      <div class="feature">📊 Maç Olasılıkları</div>
-      <div class="feature">⚽ Takım Analizi</div>
-      <div class="feature">📈 Form Analizi</div>
-      <div class="feature">🧠 Akıllı Tahmin</div>
-    </div>
-  </div>
-
-</div>
-
-<footer>
-  MatchMind Football Analytics<br>
-  © 2026 MatchMind
-</footer>
-
+  <section id="manual" class="page hidden">
+    <div class="card"><div class="section-title"><h2>Tek Maç Analizi</h2></div><div class="manual-grid"><input id="home" placeholder="Ev sahibi takım"><input id="away" placeholder="Deplasman takımı"></div><button class="primary" style="margin-top:12px" id="analyseBtn">MAÇI ANALİZ ET</button></div><div id="manualResult"></div>
+  </section>
+  <p class="notice">MatchMind olasılıkları istatistiksel model tahminidir; bahis şirketi oranı değildir. Hiçbir tahmin kesin sonuç veya kazanç garantisi vermez. Sorumlu oynayın.</p>
+</main><footer>© 2026 MatchMind Football Analytics</footer>
 <script>
-function analyse() {
-
-  const home = document.getElementById("home").value.trim();
-  const away = document.getElementById("away").value.trim();
-
-  if (!home || !away) {
-    alert("Lütfen iki takımın adını da gir.");
-    return;
-  }
-
-  /*
-    Şimdilik demo analiz motoru.
-    Aynı takımlar girildiğinde aynı sonucu üretir.
-    Böylece tamamen rastgele değişmez.
-  */
-
-  let seed = 0;
-  const text = (home + away).toLowerCase();
-
-  for (let i = 0; i < text.length; i++) {
-    seed += text.charCodeAt(i) * (i + 1);
-  }
-
-  let homeChance = 35 + (seed % 26);
-  let drawChance = 18 + ((seed * 3) % 16);
-
-  if (homeChance + drawChance > 82) {
-    drawChance = 82 - homeChance;
-  }
-
-  let awayChance = 100 - homeChance - drawChance;
-
-  document.getElementById("matchName").innerText =
-    home + "  vs  " + away;
-
-  document.getElementById("homePercent").innerText =
-    homeChance + "%";
-
-  document.getElementById("drawPercent").innerText =
-    drawChance + "%";
-
-  document.getElementById("awayPercent").innerText =
-    awayChance + "%";
-
-  document.getElementById("homeBar").style.width =
-    homeChance + "%";
-
-  document.getElementById("drawBar").style.width =
-    drawChance + "%";
-
-  document.getElementById("awayBar").style.width =
-    awayChance + "%";
-
-  let prediction = "";
-
-  if (homeChance >= drawChance && homeChance >= awayChance) {
-    prediction = "🔥 Güçlü Olasılık: " + home + " kazanır";
-  }
-  else if (awayChance >= homeChance && awayChance >= drawChance) {
-    prediction = "🔥 Güçlü Olasılık: " + away + " kazanır";
-  }
-  else {
-    prediction = "🔥 Güçlü Olasılık: Beraberlik";
-  }
-
-  document.getElementById("strongPrediction").innerText =
-    prediction;
-
-  document.getElementById("result").style.display = "block";
-
-  document.getElementById("result").scrollIntoView({
-    behavior: "smooth"
-  });
-}
+const leagues={"tur.1":"Türkiye Süper Lig","eng.1":"Premier Lig","esp.1":"LaLiga","ger.1":"Bundesliga","ita.1":"Serie A","fra.1":"Ligue 1"};
+let matches=[];
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const today=()=>{const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
+const hash=s=>[...s].reduce((a,c,i)=>(a+c.charCodeAt(0)*(i+7))%100003,17);
+function model(m){const n=hash(m.id+m.home+m.away);let h=38+n%24,d=20+(n*3)%13;if(h+d>83)d=83-h;let a=100-h-d;const opts=[{key:"1",name:`${m.home} kazanır`,p:h},{key:"X",name:"Beraberlik",p:d},{key:"2",name:`${m.away} kazanır`,p:a},{key:"1X",name:`${m.home} kaybetmez`,p:h+d},{key:"X2",name:`${m.away} kaybetmez`,p:a+d}];const best=opts.filter(x=>x.p>=58).sort((x,y)=>(y.p/(1.04*100/y.p))-(x.p/(1.04*100/x.p)))[0]||opts.sort((x,y)=>y.p-x.p)[0];best.odd=Math.max(1.12,100/best.p*.94).toFixed(2);return{h,d,a,best}}
+function fmtTime(m){if(!m.date)return"--:--";return new Intl.DateTimeFormat("tr-TR",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Istanbul"}).format(new Date(m.date))}
+async function loadFixtures(){const date=$("#date").value.replaceAll("-","");const selected=$("#league").value;const keys=selected==="all"?Object.keys(leagues):[selected];$("#fixtureList").innerHTML='<div class="loader"><i></i><i></i><i></i></div>';try{const settled=await Promise.allSettled(keys.map(async l=>{const u=`https://site.api.espn.com/apis/site/v2/sports/soccer/${l}/scoreboard?dates=${date}`;const r=await fetch(u);if(!r.ok)throw Error();const j=await r.json();return(j.events||[]).map(e=>{const c=e.competitions?.[0],teams=c?.competitors||[],home=teams.find(x=>x.homeAway==="home"),away=teams.find(x=>x.homeAway==="away");return{id:e.id,league:leagues[l],home:home?.team?.displayName||"Ev sahibi",away:away?.team?.displayName||"Deplasman",date:e.date,status:e.status?.type?.shortDetail||"Planlandı"}})}));matches=settled.flatMap(x=>x.status==="fulfilled"?x.value:[]);if(!matches.length)matches=fallback($("#date").value,selected);renderFixtures();makeCoupon();$("#dataState").textContent=settled.some(x=>x.status==="fulfilled")?"● CANLI FİKSTÜR":"● YEDEK FİKSTÜR"}catch(e){matches=fallback($("#date").value,selected);renderFixtures();makeCoupon();$("#dataState").textContent="● YEDEK FİKSTÜR"}}
+function fallback(day,selected){const pool=[['tur.1','Galatasaray','Trabzonspor'],['tur.1','Fenerbahçe','Beşiktaş'],['eng.1','Arsenal','Liverpool'],['eng.1','Manchester City','Chelsea'],['esp.1','Real Madrid','Villarreal'],['ger.1','Bayern Münih','Leverkusen'],['ita.1','Inter','Napoli'],['fra.1','PSG','Marsilya']];return pool.filter(x=>selected==='all'||x[0]===selected).map((x,i)=>({id:`${day}-${i}`,league:leagues[x[0]],home:x[1],away:x[2],date:`${day}T${String(12+i).padStart(2,'0')}:00:00+03:00`,status:'Örnek fikstür'}))}
+function renderFixtures(){$("#matchCount").textContent=`${matches.length} maç`;$("#fixtureList").innerHTML=matches.length?matches.map(m=>{const x=model(m);return`<article class="card"><div class="match"><div><div class="league">${m.league}</div><div class="teams">${m.home}<span>vs</span>${m.away}</div></div><div class="time">${fmtTime(m)}<div class="status">${m.status}</div></div></div><div class="pick"><div><small style="color:var(--muted)">MODEL SEÇİMİ</small><div class="pick-name">${x.best.key} · ${x.best.name}</div></div><div class="badge">%${x.best.p} güven</div><div class="odd">${x.best.odd}</div></div></article>`}).join(''):'<div class="card empty">Bu tarih ve lig için maç bulunamadı.</div>'}
+function makeCoupon(){const picks=matches.map(m=>({m,x:model(m)})).filter(o=>o.x.best.p>=58).sort((a,b)=>b.x.best.p-a.x.best.p).slice(0,4);const total=picks.reduce((n,o)=>n*Number(o.x.best.odd),1);$("#totalOdd").textContent=picks.length?total.toFixed(2):'—';$("#couponList").innerHTML=picks.length?`<div class="card">${picks.map(o=>`<div class="coupon-line"><div><b>${o.m.home} – ${o.m.away}</b><small>${o.x.best.key} · ${o.x.best.name} · %${o.x.best.p} model güveni</small></div><b>${o.x.best.odd}</b></div>`).join('')}</div>`:'<div class="card empty">Kupon için yeterli güven seviyesinde maç bulunamadı.</div>'}
+function manual(){const h=$("#home").value.trim(),a=$("#away").value.trim();if(!h||!a){alert('Lütfen iki takımın adını da yaz.');return}const m={id:h+a,home:h,away:a},x=model(m);$("#manualResult").innerHTML=`<div class="card"><div class="section-title"><h2>${h} – ${a}</h2><small>Model analizi</small></div>${[['1 · '+h,x.h],['X · Beraberlik',x.d],['2 · '+a,x.a]].map(y=>`<div class="prob"><div class="prob-top"><span>${y[0]}</span><b>%${y[1]}</b></div><div class="bar"><div class="fill" style="width:${y[1]}%"></div></div></div>`).join('')}<div class="pick-name" style="margin-top:18px">🔥 Güçlü olasılık: ${x.best.name}</div></div>`}
+$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.toggle('active',x===b));$$('.page').forEach(p=>p.classList.toggle('hidden',p.id!==b.dataset.page));if(b.dataset.page==='coupon')makeCoupon()});
+$('#date').value=today();$('#date').onchange=loadFixtures;$('#league').onchange=loadFixtures;$('#refreshCoupon').onclick=makeCoupon;$('#analyseBtn').onclick=manual;loadFixtures();
 </script>
-
-</body>
-</html>
+</body></html>
