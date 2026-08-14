@@ -1,0 +1,26 @@
+name: Oran verilerini güncelle
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 */12 * * *'
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Piyasa oranlarını al
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+        run: node scripts/update-odds.mjs
+      - name: Güncel veriyi yayınla
+        run: |
+          git config user.name "matchmind-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add odds-feed.json
+          git diff --cached --quiet || git commit -m "Oran verilerini güncelle"
+          git push
